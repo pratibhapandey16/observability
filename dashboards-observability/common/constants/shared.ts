@@ -125,3 +125,8 @@ export const LIVE_OPTIONS = [
 ];
 
 export const LIVE_END_TIME ='now';
+
+export enum DefaultChartStyles {
+  LineWidth = 2,
+  FillOpacity = 40,
+};

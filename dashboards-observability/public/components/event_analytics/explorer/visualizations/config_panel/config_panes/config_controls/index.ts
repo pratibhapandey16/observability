@@ -11,3 +11,6 @@ export { ConfigThresholds } from './config_thresholds';
 export { ConfigText } from './config_text';
 export { ConfigGaugeValueOptions } from './config_gauge_options';
 export { ConfigLegend } from './config_legend';
+export { SliderConfig } from './config_style_slider';
+export { ConfigColorTheme } from './config_color_theme';
+export { ConfigInputField } from './config_input_field';
