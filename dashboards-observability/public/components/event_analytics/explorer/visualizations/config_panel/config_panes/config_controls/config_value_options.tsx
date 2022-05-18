@@ -36,7 +36,7 @@ export const ConfigValueOptions = ({
         paddingTitle: schema.name,
         advancedTitle: 'advancedTitle',
         dropdownList:
-          schema?.options?.map((option) => ({ name: option })) ||
+          schema?.options?.map((option) => ({ ...option })) ||
           fields.map((item) => ({ ...item })),
         onSelectChange: handleConfigurationChange(schema.mapTo),
         isSingleSelection: schema.isSingleSelection,
