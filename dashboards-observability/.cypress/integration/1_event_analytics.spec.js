@@ -22,22 +22,22 @@ import {
 import { supressResizeObserverIssue } from '../utils/constants';
 
  const vis_name_sub_string = Math.floor(Math.random() * 100);
- const saveVisulizationAndVerify = () =>{
+ const saveVisualizationAndVerify = () =>{
     cy.get('[data-test-subj="eventExplorer__saveManagementPopover"]').click();
     cy.get('[data-test-subj="eventExplorer__querySaveComboBox"]').click()
     cy.get('.euiComboBoxOptionsList__rowWrap .euiFilterSelectItem').eq(0).click();
     cy.get('.euiPopover__panel .euiFormControlLayoutIcons [data-test-subj="comboBoxToggleListButton"]').eq(0).click();
-    cy.get('.euiPopover__panel input').eq(1).type(`Test visulization_`+vis_name_sub_string);
+    cy.get('.euiPopover__panel input').eq(1).type(`Test visualization_`+vis_name_sub_string);
     cy.get('[data-test-subj="eventExplorer__querySaveConfirm"]').click();
     cy.wait(delay);
     cy.get('.euiHeaderBreadcrumbs a').eq(1).click();
-    cy.get('.euiFlexGroup .euiFormControlLayout__childrenWrapper input').eq(0).type(`Test visulization_`+vis_name_sub_string).type('{enter}');
+    cy.get('.euiFlexGroup .euiFormControlLayout__childrenWrapper input').eq(0).type(`Test visualization_`+vis_name_sub_string).type('{enter}');
     cy.get('.euiBasicTable .euiTableCellContent button').eq(0).click();
 }
 
- const deleteVisulaization = () =>{
+ const deleteVisualization = () =>{
    cy.get('a[href = "#/event_analytics"]').click();
-   cy.get('.euiFlexGroup .euiFormControlLayout__childrenWrapper input').eq(0).type(`Test visulization_`+vis_name_sub_string).type('{enter}');
+   cy.get('.euiFlexGroup .euiFormControlLayout__childrenWrapper input').eq(0).type(`Test visualization_`+vis_name_sub_string).type('{enter}');
    cy.get('input[data-test-subj = "checkboxSelectAll"]').click();
    cy.get('.euiButtonContent.euiButtonContent--iconRight.euiButton__content').click();
    cy.get('.euiContextMenuItem .euiContextMenuItem__text').eq(0).click();
@@ -660,11 +660,11 @@ it('Renders Histogram chart and save visualization', () => {
     cy.get('.euiComboBoxOption__content').eq(0).click();
     cy.get('.euiFlexItem.euiFlexItem--flexGrowZero .euiButton__text').eq(2).click();
     cy.wait(delay);
-    saveVisulizationAndVerify();
+    saveVisualizationAndVerify();
   });
 
  it('Delete Visualization for Histogram chart from list of saved Visualizations on Event analytics page', () =>{
-  deleteVisulaization();
+  deleteVisualization();
  })
 
  it('Renders Histogram chart, add value parameters and verify Reset button click is working', () => {
