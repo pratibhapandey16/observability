@@ -73,55 +73,65 @@ export const pageStyles: CSS.Properties = {
 
 export const NUMERICAL_FIELDS = ['short', 'integer', 'long', 'float', 'double'];
 
-export const ENABLED_VIS_TYPES = ['bar', 'horizontal_bar', 'line', 'pie', 'heatmap', 'text'];
+export const ENABLED_VIS_TYPES = ['bar', 'horizontal_bar', 'line', 'pie', 'heatmap', 'text', 'tree_map'];
 
 //Live tail constants
 export const LIVE_OPTIONS = [
   {
-    label:'5s',
+    label: '5s',
     startTime: 'now-5s',
     delayTime: 5000,
   },
   {
-    label:'10s',
+    label: '10s',
     startTime: 'now-10s',
     delayTime: 10000,
   },
   {
-    label:'30s',
+    label: '30s',
     startTime: 'now-30s',
     delayTime: 30000,
   },
   {
-    label:'1m',
+    label: '1m',
     startTime: 'now-1m',
     delayTime: 60000,
   },
   {
-    label:'5m',
+    label: '5m',
     startTime: 'now-5m',
     delayTime: 60000 * 5,
   },
   {
-    label:'15m',
+    label: '15m',
     startTime: 'now-15m',
     delayTime: 60000 * 15,
   },
   {
-    label:'30m',
+    label: '30m',
     startTime: 'now-30m',
     delayTime: 60000 * 30,
   },
   {
-    label:'1h',
+    label: '1h',
     startTime: 'now-1h',
     delayTime: 60000 * 60,
   },
   {
-    label:'2h',
+    label: '2h',
     startTime: 'now-2h',
     delayTime: 60000 * 120,
   },
 ];
 
-export const LIVE_END_TIME ='now';
+export const LIVE_END_TIME = 'now';
+
+export const BLUES_PALETTE = { name: 'Blues', label: 'Blues', colors: ['rgb(5,10,172)', 'rgb(40,60,190)', 'rgb(70,100,245)', 'rgb(90,120,245)', 'rgb(106,137,247)', 'rgb(220,220,220)',], }; 
+export const REDS_PALETTE = { name: 'Reds', label: 'Reds', colors: ['rgb(220,220,220)', 'rgb(245,195,157)', 'rgb(245,160,105)', 'rgb(178,10,28)'], }; 
+export const GREENS_PALETTE = { name: 'Greens', label: 'Greens', colors: ['rgb(0,68,27)', 'rgb(0,109,44)', 'rgb(35,139,69)', 'rgb(65,171,93)', 'rgb(116,196,118)', 'rgb(161,217,155)', 'rgb(199,233,192)', 'rgb(229,245,224)', 'rgb(247,252,245)',], }; 
+export const GREYS_PALETTE = { name: 'Greys', label: 'Greys', colors: ['rgb(0,0,0)', 'rgb(255,255,255)'], };
+export const BLUERED_PALETTE = { name: 'Bluered', label: 'Blue-Red', colors: ['rgb(0,0,255)', 'rgb(255,0,0)'], }; 
+export const RdBu_PALETTE = { name: 'RdBu', label: 'Red-Blue', colors: ['rgb(5,10,172)', 'rgb(106,137,247)', 'rgb(190,190,190)', 'rgb(220,170,132)', 'rgb(230,145,90)', 'rgb(178,10,28)',], }; 
+export const YlOrRd_PALETTE = { name: 'YlOrRd', label: 'Yellow-Orange-Red', colors: ['rgb(128,0,38)', 'rgb(189,0,38)', 'rgb(227,26,28)', 'rgb(252,78,42)', 'rgb(253,141,60)', 'rgb(254,178,76)', 'rgb(254,217,118)', 'rgb(255,237,160)', 'rgb(255,255,204)',], }; 
+export const YlGnBu_PALETTE = { name: 'YlGnBu', label: 'Yellow-Green-Blue', colors: ['rgb(8,29,88)', 'rgb(37,52,148)', 'rgb(34,94,168)', 'rgb(29,145,192)', 'rgb(65,182,196)', 'rgb(127,205,187)', 'rgb(199,233,180)', 'rgb(237,248,217)', 'rgb(255,255,217)',], };
+

@@ -28,6 +28,10 @@ export const TEST_QUERIES = [
     query: 'source = opensearch_dashboards_sample_data_logs | stats count(), avg(bytes) by host, tags',
     dateRangeDOM: YEAR_TO_DATE_DOM_ID
   },
+  {
+    query: 'source=opensearch_dashboards_sample_data_flights | stats avg(FlightDelayMin) by DestCountry, DestCityName',
+    dateRangeDOM: YEAR_TO_DATE_DOM_ID
+  },
 ];
 
 export const TESTING_PANEL = 'Mock Testing Panels';
@@ -70,4 +74,18 @@ export const landOnPanels = () => {
     `${Cypress.env('opensearchDashboards')}/app/observability-dashboards#/operational_panels`
   );
   cy.wait(delay);
+};
+
+export const renderTreeMapchart = () => {
+  querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);
+    cy.get('[data-test-subj="configPane__vizTypeSelector"] [data-test-subj="comboBoxInput"]').type('Tree Map').type('{enter}');
+    cy.get('#configPanel__panelOptions .euiFieldText').click().type('Tree Map');
+    cy.get('.euiFlexItem .euiFormRow [placeholder="Description"]').click().type('This is the description for Tree Map');
+    cy.get('.euiComboBox__inputWrap.euiComboBox__inputWrap-isClearable').eq(0).click();
+    cy.get('.euiFormControlLayoutIcons [data-test-subj ="comboBoxToggleListButton"]').eq(1).click();
+    cy.get('.euiComboBoxOption__content').eq(2).click();
+    cy.get('.euiFormControlLayoutIcons [data-test-subj ="comboBoxToggleListButton"]').eq(2).click();
+    cy.get('.euiComboBoxOption__content').eq(1).click();
+    cy.get('.euiFormControlLayoutIcons [data-test-subj ="comboBoxToggleListButton"]').eq(3).click();
+    cy.get('.euiComboBoxOption__content').eq(0).click();
 };

@@ -1,20 +1,30 @@
 /*
+
  * Copyright OpenSearch Contributors
+
  * SPDX-License-Identifier: Apache-2.0
+
  */
+
+
 
 import { TreeMap } from './treemaps';
 import { getPlotlySharedConfigs, getPlotlyCategory } from '../shared/shared_configs';
 import { LensIconChartBar } from '../../assets/chart_bar';
 import { VizDataPanel } from '../../../event_analytics/explorer/visualizations/config_panel/config_panes/default_vis_editor';
 import { ConfigEditor } from '../../../event_analytics/explorer/visualizations/config_panel/config_panes/json_editor';
-import { ConfigValueOptions } from '../../../event_analytics/explorer/visualizations/config_panel/config_panes/config_controls';
+import {
+  ConfigThresholds,
+  ConfigValueOptions
+} from '../../../event_analytics/explorer/visualizations/config_panel/config_panes/config_controls';
+import {
+  ColorPalettePicker,
+} from '../../../event_analytics/explorer/visualizations/config_panel/config_panes/config_controls/config_color_palette_picker';
 
 const sharedConfigs = getPlotlySharedConfigs();
 const VIS_CATEGORY = getPlotlyCategory();
 
-export interface BarTypeParams {}
-
+export interface BarTypeParams { }
 export const createTreeMapDefinition = (params: BarTypeParams = {}) => ({
   name: 'tree_map',
   type: 'tree_map',
@@ -24,10 +34,11 @@ export const createTreeMapDefinition = (params: BarTypeParams = {}) => ({
   selection: {
     dataLoss: 'nothing',
   },
+
   category: VIS_CATEGORY.BASICS,
+  iconType: 'heatmap',
   icon: LensIconChartBar,
   categoryAxis: 'xaxis',
-  seriesAxis: 'yaxis',
   orientation: 'v',
   component: TreeMap,
   editorConfig: {
@@ -45,37 +56,28 @@ export const createTreeMapDefinition = (params: BarTypeParams = {}) => ({
             mapTo: 'valueOptions',
             schemas: [
               {
-                name: 'X-axis',
+                name: 'Child Field',
                 isSingleSelection: true,
                 component: null,
-                mapTo: 'xaxis',
+                mapTo: 'childField',
               },
               {
-                name: 'Y-axis',
-                isSingleSelection: false,
+                name: 'Parent Field',
+                isSingleSelection: true,
                 component: null,
-                mapTo: 'yaxis',
+                mapTo: 'parentField',
+              },
+              {
+                name: 'Value Field',
+                isSingleSelection: true,
+                component: null,
+                mapTo: 'valueField',
               },
             ],
           },
-        ],
-      },
-      {
-        id: 'style-panel',
-        name: 'Layout',
-        mapTo: 'layoutConfig',
-        editor: ConfigEditor,
-        content: [],
-      },
-    ],
-  },
-  visConfig: {
-    layout: {
-      ...sharedConfigs.layout,
-    },
-    config: {
-      ...sharedConfigs.config,
-    },
-    isUniColor: false,
-  },
+          { id: 'chart_styles', name: 'Chart Styles', editor: ConfigValueOptions, mapTo: 'chartStyles', schemas: [{ name: 'Color Theme', isSingleSelection: true, component: ColorPalettePicker, mapTo: 'colorTheme', },], },],
+      }, { id: 'style-panel', name: 'Layout', mapTo: 'layoutConfig', editor: ConfigEditor, content: [], },],
+  }, visConfig: { layout: { ...sharedConfigs.layout, }, config: { ...sharedConfigs.config, }, isUniColor: false, },
 });
+
+
