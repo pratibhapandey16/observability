@@ -40,7 +40,7 @@ export const ConfigValueOptions = ({
           fields.map((item) => ({ ...item })),
         onSelectChange: handleConfigurationChange(schema.mapTo),
         isSingleSelection: schema.isSingleSelection,
-        selectedAxis: vizState[schema.mapTo],
+        selectedAxis: vizState[schema.mapTo] || schema?.defaultState,
         vizState,
         ...schema.props,
       };
