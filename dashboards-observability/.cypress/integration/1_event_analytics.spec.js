@@ -36,7 +36,6 @@ const saveVisulizationAndVerify = () => {
   cy.get('.euiFlexGroup .euiFormControlLayout__childrenWrapper input').eq(0).type(`Test visulization_Gauge` + vis_name_sub_string).type('{enter}');
   cy.get('.euiBasicTable .euiTableCellContent button').eq(0).click();
 }
-
 describe('Adding sample data and visualization', () => {
   it('Adds sample flights data for event analytics', () => {
     cy.visit(`${Cypress.env('opensearchDashboards')}/app/home#/tutorial_directory/sampleData`);

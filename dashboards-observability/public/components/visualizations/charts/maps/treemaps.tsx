@@ -3,11 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useMemo, useState } from 'react';
-import { indexOf, isEmpty, isEqual, isNull, max, mean, min, uniq } from 'lodash';
+import React, { useMemo } from 'react';
+import { indexOf, isEmpty, isEqual, isNull, uniq } from 'lodash';
+
 import { Plt } from '../../plotly/plot';
 import { EmptyPlaceholder } from '../../../event_analytics/explorer/visualizations/shared_components/empty_placeholder';
 import { NUMERICAL_FIELDS } from '../../../../../common/constants/shared';
+import { DEFAULT_PALETTE, SINGLE_COLOR_PALETTE } from '../../../../../common/constants/colors';
 
 export const TreeMap = ({ visualizations, layout, config }: any) => {
   const {
@@ -40,7 +42,14 @@ export const TreeMap = ({ visualizations, layout, config }: any) => {
   const colorField =
     dataConfig?.chartStyles && dataConfig?.chartStyles.colorTheme
       ? dataConfig?.chartStyles.colorTheme
-      : { name: 'default', value: 'default' };
+      : { name: DEFAULT_PALETTE };
+
+  const tilingAlgorithm =
+    dataConfig?.treemapOptions &&
+    dataConfig?.treemapOptions.tilingAlgorithm &&
+    !isEmpty(dataConfig?.treemapOptions.tilingAlgorithm)
+      ? dataConfig?.treemapOptions.tilingAlgorithm[0]
+      : 'squarify';
 
   if (
     isEmpty(data[childField.name]) ||
@@ -66,22 +75,22 @@ export const TreeMap = ({ visualizations, layout, config }: any) => {
     }
 
     const marker =
-      colorField.name === 'singleColor'
+      colorField.name === SINGLE_COLOR_PALETTE
         ? {
             marker: {
               colorscale: [
-                [0, colorField.value],
-                [1, colorField.value],
+                [0, colorField.color],
+                [1, colorField.color],
               ],
               colorbar: {
                 len: 1,
               },
             },
           }
-        : colorField.name !== 'default'
+        : colorField.name !== DEFAULT_PALETTE
         ? {
             marker: {
-              colorscale: colorField.value,
+              colorscale: colorField.name,
               colorbar: {
                 len: 1,
               },
@@ -96,10 +105,13 @@ export const TreeMap = ({ visualizations, layout, config }: any) => {
         parents: parentsArray,
         values: valuesArray,
         textinfo: 'label+value+percent parent+percent entry',
+        tiling: {
+          packing: tilingAlgorithm.value,
+        },
         ...marker,
       },
     ];
-  }, [data, childField, valueField, parentField, colorField]);
+  }, [data, childField, valueField, parentField, colorField, tilingAlgorithm]);
 
   const mergedLayout = {
     ...layout,
