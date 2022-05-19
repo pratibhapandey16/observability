@@ -646,13 +646,13 @@ describe('Renders Tree Map', () => {
     landOnEventVisualizations();
   });
 
-  it.only('Renders Tree Map', () => {
+  it('Renders Tree Map', () => {
     renderTreeMapchart();
     cy.get('.euiFlexItem.euiFlexItem--flexGrowZero .euiButton__text').eq(2).click();
     cy.get('path.surface').should('have.length', 176);
   });
 
-  it.only('Renders Tree Map, add value parameters and verify Reset button click is working', () => {
+  it('Renders Tree Map, add value parameters and verify Reset button click is working', () => {
    renderTreeMapchart();
     cy.get('.euiFlexItem.euiFlexItem--flexGrowZero .euiButton__text').eq(2).click();
     cy.get('[data-test-subj="visualizeEditorResetButton"]').click();
@@ -663,7 +663,7 @@ describe('Renders Tree Map', () => {
     cy.get('.euiComboBox__inputWrap.euiComboBox__inputWrap-isClearable').eq(3).should('have.value', '');
   });
 
-  it.only('Renders Tree Map, Save and Delete Visualization', () => {
+  it('Renders Tree Map, Save and Delete Visualization', () => {
     renderTreeMapchart();
     cy.get('.euiFlexItem.euiFlexItem--flexGrowZero .euiButton__text').eq(2).click();
     saveVisualizationAndVerify();
@@ -671,7 +671,7 @@ describe('Renders Tree Map', () => {
     deleteVisualization();
   });
   
-  it.only('Render Tree Map chart and verify color theme under Chart styles options', () =>{
+  it('Render Tree Map chart and verify color theme under Chart styles options', () =>{
     renderTreeMapchart();
     cy.get('.euiTitle.euiTitle--xxsmall').contains('Color Theme').should('exist');
     cy.get('.euiSuperSelectControl').contains('Default').click();
@@ -686,7 +686,7 @@ describe('Renders Tree Map', () => {
     cy.get('path[style*="rgb(68, 68, 68)"]').eq(0).should('exist');
   });
 
-  it.only('Traverse between root and parent node in Tree Map chart', () => {
+  it('Traverse between root and parent node in Tree Map chart', () => {
     querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);
     cy.get('[data-test-subj="configPane__vizTypeSelector"] [data-test-subj="comboBoxInput"]').type('Tree Map').type('{enter}');
     cy.get('#configPanel__panelOptions .euiFieldText').click().type('Tree Map');
@@ -711,7 +711,7 @@ describe('Renders Tree Map', () => {
     cy.get('.pathbar.cursor-pointer .slicetext[data-unformatted=" "]').click({force:true});
   });
 
-  it.only('"No results found" message when user fails to select proper fields', () =>{
+  it('"No results found" message when user fails to select proper fields', () =>{
     querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);
     cy.get('[data-test-subj="configPane__vizTypeSelector"] [data-test-subj="comboBoxInput"]').type('Tree Map').type('{enter}');
     cy.get('#configPanel__panelOptions .euiFieldText').click().type('Tree Map');
