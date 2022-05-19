@@ -1,12 +1,7 @@
 /*
-
  * Copyright OpenSearch Contributors
-
  * SPDX-License-Identifier: Apache-2.0
-
  */
-
-
 
 import { TreeMap } from './treemaps';
 import { getPlotlySharedConfigs, getPlotlyCategory } from '../shared/shared_configs';
@@ -24,6 +19,7 @@ const sharedConfigs = getPlotlySharedConfigs();
 const VIS_CATEGORY = getPlotlyCategory();
 
 export interface BarTypeParams { }
+
 export const createTreeMapDefinition = (params: BarTypeParams = {}) => ({
   name: 'tree_map',
   type: 'tree_map',
@@ -33,11 +29,11 @@ export const createTreeMapDefinition = (params: BarTypeParams = {}) => ({
   selection: {
     dataLoss: 'nothing',
   },
-
   category: VIS_CATEGORY.BASICS,
   iconType: 'heatmap',
   icon: LensIconChartBar,
   categoryAxis: 'xaxis',
+  seriesAxis: 'yaxis',
   orientation: 'v',
   component: TreeMap,
   editorConfig: {
@@ -113,9 +109,24 @@ export const createTreeMapDefinition = (params: BarTypeParams = {}) => ({
               },
             ],
           },
-          { id: 'chart_styles', name: 'Chart Styles', editor: ConfigValueOptions, mapTo: 'chartStyles', schemas: [{ name: 'Color Theme', isSingleSelection: true, component: ColorPalettePicker, mapTo: 'colorTheme', },], },],
-      }, { id: 'style-panel', name: 'Layout', mapTo: 'layoutConfig', editor: ConfigEditor, content: [], },],
-  }, visConfig: { layout: { ...sharedConfigs.layout, }, config: { ...sharedConfigs.config, }, isUniColor: false, },
+        ],
+      },
+      {
+        id: 'style-panel',
+        name: 'Layout',
+        mapTo: 'layoutConfig',
+        editor: ConfigEditor,
+        content: [],
+      },
+    ],
+  },
+  visConfig: {
+    layout: {
+      ...sharedConfigs.layout,
+    },
+    config: {
+      ...sharedConfigs.config,
+    },
+    isUniColor: false,
+  },
 });
-
-

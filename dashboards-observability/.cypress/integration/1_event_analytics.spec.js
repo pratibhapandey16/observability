@@ -31,7 +31,6 @@ const saveVisulizationAndVerify = () => {
   cy.get('.euiPopover__panel input').eq(1).type(`Test visulization_Gauge` + vis_name_sub_string);
   cy.get('[data-test-subj="eventExplorer__querySaveConfirm"]').click();
   cy.wait(delay);
-
   cy.get('.euiHeaderBreadcrumbs a').eq(1).click();
   cy.get('.euiFlexGroup .euiFormControlLayout__childrenWrapper input').eq(0).type(`Test visulization_Gauge` + vis_name_sub_string).type('{enter}');
   cy.get('.euiBasicTable .euiTableCellContent button').eq(0).click();
@@ -637,7 +636,7 @@ describe('Renders Tree Map', () => {
     landOnEventVisualizations();
   });
 
-  it('Renders Tree Map', () => {
+  it.only('Renders Tree Map', () => {
     querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);
     cy.get('[data-test-subj="configPane__vizTypeSelector"] [data-test-subj="comboBoxInput"]').type('Tree Map').type('{enter}');
     cy.get('#configPanel__panelOptions .euiFieldText').click().type('Tree Map');
@@ -652,7 +651,7 @@ describe('Renders Tree Map', () => {
     cy.get('.euiFlexItem.euiFlexItem--flexGrowZero .euiButton__text').eq(2).click();
   });
 
-  it('Renders Tree Map, add value parameters and verify Reset button click is working', () => {
+  it.only('Renders Tree Map, add value parameters and verify Reset button click is working', () => {
     querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);
     cy.get('[data-test-subj="configPane__vizTypeSelector"] [data-test-subj="comboBoxInput"]').type('Tree Map').type('{enter}');
     cy.wait(delay);
@@ -672,7 +671,7 @@ describe('Renders Tree Map', () => {
     cy.get('.euiComboBox__inputWrap.euiComboBox__inputWrap-isClearable').eq(3).should('have.value', '');
   });
 
-  it('Renders Tree Map and Save Visulization', () => {
+  it.only('Renders Tree Map and Save Visulization', () => {
     querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);
     cy.get('[data-test-subj="configPane__vizTypeSelector"] [data-test-subj="comboBoxInput"]').type('Tree Map').type('{enter}');
     cy.get('#configPanel__panelOptions .euiFieldText').click().type('Tree Map');
@@ -702,5 +701,44 @@ describe('Renders Tree Map', () => {
     cy.get('.euiButton__text').contains('Preview').should('exist').click();
     cy.get('path[style*="rgb(255, 255, 255)"]').eq(0).should('exist');
   });
-});
 
+  it.only('Traverse between root and parent node in Tree Map chart', () => {
+    querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);
+    cy.get('[data-test-subj="configPane__vizTypeSelector"] [data-test-subj="comboBoxInput"]').type('Tree Map').type('{enter}');
+    cy.get('#configPanel__panelOptions .euiFieldText').click().type('Tree Map');
+    cy.get('.euiFlexItem .euiFormRow [placeholder="Description"]').click().type('This is the description for Tree Map');
+    cy.get('.euiComboBox__inputWrap.euiComboBox__inputWrap-isClearable').eq(0).click();
+    cy.get('.euiFormControlLayoutIcons [data-test-subj ="comboBoxToggleListButton"]').eq(1).click();
+    cy.get('.euiComboBoxOption__content').eq(2).click();
+    cy.get('.euiFormControlLayoutIcons [data-test-subj ="comboBoxToggleListButton"]').eq(2).click();
+    cy.get('.euiComboBoxOption__content').eq(1).click();
+    cy.get('.euiFormControlLayoutIcons [data-test-subj ="comboBoxToggleListButton"]').eq(3).click();
+    cy.get('.euiComboBoxOption__content').eq(0).click();
+    cy.wait(delay);
+    cy.get('.euiSuperSelectControl').click();
+    cy.get('.euiColorPalettePicker__item').eq(7).contains('Red-Blue').click();
+    cy.get('.euiButton__text').contains('Preview').should('exist').click();
+    cy.get('.slicetext[data-unformatted="US"]').click({force:true});
+    cy.wait(delay);
+    cy.get('.slicetext[data-unformatted*="Cleveland"]').click({force:true});
+    cy.get('text.slicetext').contains('100% of entry').should('exist');
+    cy.get('.pathbar.cursor-pointer .slicetext[data-unformatted="US"]').click({force:true});
+    cy.wait(delay);
+    cy.get('.pathbar.cursor-pointer .slicetext[data-unformatted=" "]').click({force:true});
+  });
+
+  it.only('"No results found" message when user fails to select proper fields', () =>{
+    querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);
+    cy.get('[data-test-subj="configPane__vizTypeSelector"] [data-test-subj="comboBoxInput"]').type('Tree Map').type('{enter}');
+    cy.get('#configPanel__panelOptions .euiFieldText').click().type('Tree Map');
+    cy.get('.euiFlexItem .euiFormRow [placeholder="Description"]').click().type('This is the description for Tree Map');
+    cy.get('.euiComboBox__inputWrap.euiComboBox__inputWrap-isClearable').eq(0).click();
+    cy.get('.euiFormControlLayoutIcons [data-test-subj ="comboBoxToggleListButton"]').eq(3).click();
+    cy.get('.euiComboBoxOption__content').eq(1).click();
+    cy.wait(delay);
+    cy.get('.euiSuperSelectControl').click();
+    cy.get('.euiColorPalettePicker__item').eq(7).contains('Red-Blue').click();
+    cy.get('.euiButton__text').contains('Preview').should('exist').click();
+    cy.get('.euiTextColor.euiTextColor--subdued').contains('No results found').should('exist');
+  });
+});
