@@ -39,7 +39,7 @@ interface CreateAppProps extends AppAnalyticsComponentDeps {
   dslService: DSLService;
   pplService: PPLService;
   setToasts: (title: string, color?: string, text?: ReactChild) => void;
-  createApp: (app: ApplicationType) => void;
+  createApp: (app: ApplicationType, type: string) => void;
   updateApp: (appId: string, updateAppData: Partial<ApplicationType>, type: string) => void;
   clearStorage: () => void;
   existingAppId: string;
@@ -126,19 +126,21 @@ export const CreateApp = (props: CreateAppProps) => {
 
   const isDisabled = !name || (!query && !selectedTraces.length && !selectedServices.length);
 
-  const missingField = () => {
-    if (isDisabled) {
-      let popoverContent = '';
+  const missingField = (needLog: boolean) => {
+    let popoverContent = '';
+    if (isDisabled || (needLog && !query)) {
       if (!name) {
         popoverContent = 'Name is required.';
       } else if (!query && !selectedServices.length && !selectedTraces.length) {
         popoverContent = 'Provide at least one log source, service, entity or trace group.';
+      } else if (needLog && !query) {
+        popoverContent = 'Log source is required to set availability.';
       }
       return <p>{popoverContent}</p>;
     }
   };
 
-  const onCreate = () => {
+  const onCreate = (type: string) => {
     const appData = {
       name,
       description,
@@ -148,7 +150,7 @@ export const CreateApp = (props: CreateAppProps) => {
       panelId: '',
       availabilityVisId: '',
     };
-    createApp(appData);
+    createApp(appData, type);
   };
 
   const onUpdate = () => {
@@ -172,7 +174,7 @@ export const CreateApp = (props: CreateAppProps) => {
         <EuiPageBody component="div">
           <EuiPageHeader>
             <EuiPageHeaderSection>
-              <EuiTitle size="l">
+              <EuiTitle data-test-subj="createPageTitle" size="l">
                 <h1>{editMode ? 'Edit' : 'Create'} application</h1>
               </EuiTitle>
             </EuiPageHeaderSection>
@@ -230,15 +232,36 @@ export const CreateApp = (props: CreateAppProps) => {
           <EuiSpacer />
           <EuiFlexGroup>
             <EuiFlexItem grow={false}>
-              <EuiButton onClick={onCancel}>Cancel</EuiButton>
+              <EuiButton data-test-subj="cancelCreateButton" onClick={onCancel}>
+                Cancel
+              </EuiButton>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiToolTip position="top" content={missingField()}>
-                <EuiButton isDisabled={isDisabled} onClick={editMode ? onUpdate : onCreate} fill>
+              <EuiToolTip position="top" content={missingField(false)}>
+                <EuiButton
+                  data-test-subj="createButton"
+                  isDisabled={isDisabled}
+                  onClick={editMode ? onUpdate : () => onCreate('create')}
+                  fill={editMode ? true : false}
+                >
                   {editMode ? 'Save' : 'Create'}
                 </EuiButton>
               </EuiToolTip>
             </EuiFlexItem>
+            {editMode || (
+              <EuiFlexItem grow={false}>
+                <EuiToolTip position="top" content={missingField(true)}>
+                  <EuiButton
+                    data-test-subj="createAndSetButton"
+                    fill
+                    isDisabled={isDisabled || !query}
+                    onClick={() => onCreate('createSetAvailability')}
+                  >
+                    Create and Set Availability
+                  </EuiButton>
+                </EuiToolTip>
+              </EuiFlexItem>
+            )}
           </EuiFlexGroup>
         </EuiPageBody>
       </EuiPage>

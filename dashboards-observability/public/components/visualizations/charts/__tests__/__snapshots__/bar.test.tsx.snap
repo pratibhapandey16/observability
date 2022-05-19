@@ -298,6 +298,12 @@ exports[`Bar component Renders bar component 1`] = `
               "mapTo": "layoutConfig",
               "name": "Layout",
             },
+            Object {
+              "editor": [Function],
+              "id": "availability-panel",
+              "mapTo": "availabilityConfig",
+              "name": "Availability",
+            },
           ],
         },
         "fullLabel": "Bar",
@@ -436,6 +442,7 @@ exports[`Bar component Renders bar component 1`] = `
         ]
       }
       debug={false}
+      divId="explorerPlotComponent"
       layout={
         Object {
           "autosize": true,
@@ -480,6 +487,7 @@ exports[`Bar component Renders bar component 1`] = `
       useResizeHandler={true}
     >
       <div
+        id="explorerPlotComponent"
         style={
           Object {
             "height": "100%",

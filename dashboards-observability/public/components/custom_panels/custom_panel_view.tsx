@@ -109,6 +109,7 @@ interface CustomPanelViewProps {
   setEndTime: any;
   childBreadcrumbs?: EuiBreadcrumb[];
   appId?: string;
+  updateAvailabilityVizId?: any;
   onAddClick?: any;
 }
 
@@ -127,6 +128,7 @@ export const CustomPanelView = (props: CustomPanelViewProps) => {
     endTime,
     setStartTime,
     setEndTime,
+    updateAvailabilityVizId,
     renameCustomPanel,
     deleteCustomPanel,
     cloneCustomPanel,
@@ -413,7 +415,12 @@ export const CustomPanelView = (props: CustomPanelViewProps) => {
   );
 
   const addButton = (
-    <EuiButton iconType="plusInCircle" onClick={onAddClick} isDisabled={addVizDisabled}>
+    <EuiButton
+      data-test-subj="addVisualizationButton"
+      iconType="plusInCircle"
+      onClick={onAddClick}
+      isDisabled={addVizDisabled}
+    >
       Add
     </EuiButton>
   );
@@ -638,6 +645,7 @@ export const CustomPanelView = (props: CustomPanelViewProps) => {
             <PanelGrid
               http={http}
               panelId={panelId}
+              updateAvailabilityVizId={updateAvailabilityVizId}
               chrome={chrome}
               panelVisualizations={panelVisualizations}
               setPanelVisualizations={setPanelVisualizations}
