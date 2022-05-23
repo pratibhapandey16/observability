@@ -17,7 +17,8 @@ import {
   landOnEventHome,
   landOnEventExplorer,
   landOnEventVisualizations,
-  landOnPanels
+  landOnPanels,
+  renderHistogramChart
 } from '../utils/event_constants';
 import { supressResizeObserverIssue } from '../utils/constants';
 
@@ -647,36 +648,19 @@ describe('Renders Histogram chart', () =>{
     landOnEventVisualizations();
 });
 
-it('Renders Histogram chart and save visualization', () => {
-  querySearch(TEST_QUERIES[5].query, TEST_QUERIES[3].dateRangeDOM);
-  cy.wait(delay);
-    cy.get('[data-test-subj="configPane__vizTypeSelector"] [data-test-subj="comboBoxInput"]').type('Histogram').type('{enter}');
-    cy.wait(delay);
-    cy.get('g.draglayer.cursor-crosshair').should('exist');
-    cy.get('#configPanel__panelOptions .euiFieldText').click().type('Histogram chart');
-    cy.get('.euiFlexItem .euiFormRow [placeholder="Description"]').click().type('This is the description for Histogram chart');
-    cy.get('.euiComboBox__inputWrap.euiComboBox__inputWrap-isClearable').eq(0).click();
-    cy.get('.euiFormControlLayoutIcons [data-test-subj ="comboBoxToggleListButton"]').eq(1).click();
-    cy.get('.euiComboBoxOption__content').eq(0).click();
+it.only('Renders Histogram chart and save visualization', () => {
+  renderHistogramChart();
     cy.get('.euiFlexItem.euiFlexItem--flexGrowZero .euiButton__text').eq(2).click();
     cy.wait(delay);
     saveVisualizationAndVerify();
   });
 
- it('Delete Visualization for Histogram chart from list of saved Visualizations on Event analytics page', () =>{
+ it.only('Delete Visualization for Histogram chart from list of saved Visualizations on Event analytics page', () =>{
   deleteVisualization();
  })
 
- it('Renders Histogram chart, add value parameters and verify Reset button click is working', () => {
-  querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);
-  cy.get('[data-test-subj="configPane__vizTypeSelector"] [data-test-subj="comboBoxInput"]').type('Histogram').type('{enter}');
-  cy.wait(delay);
-    cy.get('g.draglayer.cursor-crosshair').should('exist');
-    cy.get('#configPanel__panelOptions .euiFieldText').click().type('Histogram chart');
-    cy.get('.euiFlexItem .euiFormRow [placeholder="Description"]').click().type('This is the description for Histogram chart');
-    cy.get('.euiComboBox__inputWrap.euiComboBox__inputWrap-isClearable').eq(0).click();
-    cy.get('.euiFormControlLayoutIcons [data-test-subj ="comboBoxToggleListButton"]').eq(1).click();
-    cy.get('.euiComboBoxOption__content').eq(0).click();
+ it.only('Renders Histogram chart, add value parameters and verify Reset button click is working', () => {
+  renderHistogramChart();
     cy.get('[data-test-subj="visualizeEditorResetButton"]').click();
   });
 });
@@ -710,7 +694,6 @@ it('Verify Quick select section in Calendar overlay', () =>{
 describe('Search a query on event home', () => {
   it('Search a query and redirect to explorer to display query output', () => {
     landOnEventHome();
-
     cy.get('[data-test-subj="searchAutocompleteTextArea"]').type(TEST_QUERIES[0].query);
     cy.get('[data-test-subj="superDatePickerToggleQuickMenuButton"]').click();
     cy.get('[data-test-subj="superDatePickerCommonlyUsed_Year_to date"]').click();
