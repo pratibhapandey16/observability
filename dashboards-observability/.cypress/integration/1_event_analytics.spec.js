@@ -17,9 +17,35 @@ import {
   landOnEventHome,
   landOnEventExplorer,
   landOnEventVisualizations,
-  landOnPanels
+  landOnPanels,
+  renderHistogramChart
 } from '../utils/event_constants';
 import { supressResizeObserverIssue } from '../utils/constants';
+
+ const vis_name_sub_string = Math.floor(Math.random() * 100);
+ const saveVisualizationAndVerify = () =>{
+    cy.get('[data-test-subj="eventExplorer__saveManagementPopover"]').click();
+    cy.get('[data-test-subj="eventExplorer__querySaveComboBox"]').click()
+    cy.get('.euiComboBoxOptionsList__rowWrap .euiFilterSelectItem').eq(0).click();
+    cy.get('.euiPopover__panel .euiFormControlLayoutIcons [data-test-subj="comboBoxToggleListButton"]').eq(0).click();
+    cy.get('.euiPopover__panel input').eq(1).type(`Test visualization_`+vis_name_sub_string);
+    cy.get('[data-test-subj="eventExplorer__querySaveConfirm"]').click();
+    cy.wait(delay);
+    cy.get('.euiHeaderBreadcrumbs a').eq(1).click();
+    cy.get('.euiFlexGroup .euiFormControlLayout__childrenWrapper input').eq(0).type(`Test visualization_`+vis_name_sub_string).type('{enter}');
+    cy.get('.euiBasicTable .euiTableCellContent button').eq(0).click();
+}
+
+ const deleteVisualization = () =>{
+   cy.get('a[href = "#/event_analytics"]').click();
+   cy.get('.euiFlexGroup .euiFormControlLayout__childrenWrapper input').eq(0).type(`Test visualization_`+vis_name_sub_string).type('{enter}');
+   cy.get('input[data-test-subj = "checkboxSelectAll"]').click();
+   cy.get('.euiButtonContent.euiButtonContent--iconRight.euiButton__content').click();
+   cy.get('.euiContextMenuItem .euiContextMenuItem__text').eq(0).click();
+   cy.get('input[placeholder = "delete"]').clear().type('delete');
+   cy.get('button[data-test-subj = "popoverModal__deleteButton"]').click();
+   cy.get('.euiToastHeader').should('exist');
+  }
 
 describe('Adding sample data and visualization', () => {
   it('Adds sample flights data for event analytics', () => {
@@ -614,5 +640,27 @@ describe('Renders data view', () => {
     cy.get('[data-test-subj="workspace__dataTable"]').should('exist');
     cy.get('[data-test-subj="workspace__dataTableViewSwitch"]').click();
     cy.get('[data-test-subj="workspace__dataTable"]').should('not.exist');
+  });
+});
+
+describe('Renders Histogram chart', () =>{
+  beforeEach(() => {
+    landOnEventVisualizations();
+});
+
+it('Renders Histogram chart and save visualization', () => {
+  renderHistogramChart();
+    cy.get('.euiFlexItem.euiFlexItem--flexGrowZero .euiButton__text').eq(2).click();
+    cy.wait(delay);
+    saveVisualizationAndVerify();
+  });
+
+ it('Delete Visualization for Histogram chart from list of saved Visualizations on Event analytics page', () =>{
+  deleteVisualization();
+ })
+
+ it('Renders Histogram chart, add value parameters and verify Reset button click is working', () => {
+  renderHistogramChart();
+    cy.get('[data-test-subj="visualizeEditorResetButton"]').click();
   });
 });

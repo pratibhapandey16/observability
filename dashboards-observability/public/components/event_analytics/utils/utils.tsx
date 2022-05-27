@@ -285,3 +285,12 @@ export const findAutoInterval = (start: string = '', end: string = '') => {
 
   return [minInterval, [{ text: 'Auto', value: 'auto_' + minInterval }, ...TIME_INTERVAL_OPTIONS]];
 };
+
+// to convert hex color code to rgba format
+export const hexToRgba = (hex: string = '#3CA1C7', opacity: number = 1) => {
+  const defaultColor = [hex, '60', '161', '199'];
+  const rgbElements = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) || defaultColor;
+  const [, r, g, b] = rgbElements.map((color) => parseInt(color, 16));
+  const rgbaFormat = `rgba(${r},${g},${b},${opacity})`;
+  return rgbaFormat;
+};

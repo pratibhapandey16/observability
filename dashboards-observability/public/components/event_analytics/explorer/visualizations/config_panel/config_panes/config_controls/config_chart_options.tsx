@@ -4,8 +4,8 @@
  */
 
 import React, { useMemo, useCallback } from 'react';
-import { EuiAccordion, EuiSpacer } from '@elastic/eui';
-import { PanelItem } from './config_panel_item';
+import { EuiAccordion, EuiSpacer, EuiForm } from '@elastic/eui';
+import { SliderConfig } from './config_style_slider';
 
 export const ConfigChartOptions = ({
   visualizations,
@@ -13,8 +13,6 @@ export const ConfigChartOptions = ({
   vizState,
   handleConfigChange,
 }: any) => {
-  const { data } = visualizations;
-  const { data: vizData = {}, metadata: { fields = [] } = {} } = data?.rawVizData;
   const handleConfigurationChange = useCallback(
     (stateFiledName) => {
       return (changes) => {
@@ -29,30 +27,42 @@ export const ConfigChartOptions = ({
 
   const dimensions = useMemo(() => {
     return schemas.map((schema, index) => {
-      const DimensionComponent = schema.component || PanelItem;
-      const params = {
-        paddingTitle: schema.name,
-        advancedTitle: 'advancedTitle',
-        dropdownList: schema?.options?.map((option) => ({ name: option })) || fields,
-        onSelectChange: handleConfigurationChange(schema.mapTo),
-        isSingleSelection: schema.isSingleSelection,
-        selectedAxis: vizState[schema.mapTo],
-        ...schema.props,
-      };
+      let params;
+      const DimensionComponent = schema.component || SliderConfig;
+      if (schema.eleType === 'input') {
+        params = {
+          title: schema.name,
+          currentValue: vizState[schema.mapTo] || '',
+          handleInputChange: handleConfigurationChange(schema.mapTo),
+          vizState,
+          ...schema.props,
+        };
+      } else if (schema.eleType === 'slider') {
+        params = {
+          maxRange: schema.max,
+          title: schema.name,
+          currentRange: vizState[schema.mapTo] || schema?.defaultState,
+          handleSliderChange: handleConfigurationChange(schema.mapTo),
+          vizState,
+          ...schema.props,
+        };
+      }
       return (
         <>
-          <DimensionComponent key={`viz-series-${index}`} {...params} />
-          <EuiSpacer size="s" />
+          <EuiForm component="form">
+            <DimensionComponent key={`viz-series-${index}`} {...params} />
+            <EuiSpacer size="s" />
+          </EuiForm>
         </>
       );
     });
-  }, [schemas, fields, vizState, handleConfigurationChange]);
+  }, [vizState, handleConfigurationChange]);
 
   return (
     <EuiAccordion
       initialIsOpen
-      id="configPanel__chartOptions"
-      buttonContent="Chart options"
+      id="configPanel__chartStyles"
+      buttonContent="Chart Styles"
       paddingSize="s"
     >
       {dimensions}
