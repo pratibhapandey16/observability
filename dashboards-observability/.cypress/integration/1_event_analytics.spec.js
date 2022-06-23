@@ -19,7 +19,8 @@ import {
   landOnEventVisualizations,
   landOnPanels,
   renderTreeMapchart,
-  renderPieChart
+  renderPieChart,
+  renderDataConfig
 } from '../utils/event_constants';
 import { supressResizeObserverIssue } from '../utils/constants';
 
@@ -968,5 +969,46 @@ describe('Renders Tree Map for Parent Fields Multicolor Option', () => {
     cy.get('.euiButton__text').contains('Preview').click();
     cy.get('.euiFormHelpText.euiFormRow__text').contains('Parent 1 field').should('exist');
     cy.get('.euiFormHelpText.euiFormRow__text').contains('Parent 2 field').should('exist');
+  });
+});
+
+describe('Renders Data Configurations section for Pie chart', () => {
+  beforeEach(() => {
+    landOnEventVisualizations();
+  });
+
+  it.only('Renders Dimensions and Metrics under Data Configurations for Pie chart', () => {
+    renderPieChart();
+    renderDataConfig();
+  });
+
+  it.only('Validate "Add" and "X" buttons', () => {
+    renderPieChart();
+    cy.get('.euiResizablePanel.euiResizablePanel--middle').contains('Data Configurations');
+    cy.get('.euiButton.euiButton--primary.euiButton--fullWidth').contains('Add').click();
+    cy.get('.euiFormRow__fieldWrapper .euiComboBox').eq(3).click();
+    cy.get('.euiComboBoxOption__content').eq(2).click();
+    cy.get('.first-division .euiFormLabel.euiFormRow__label').eq(4).click();
+    cy.get('.euiComboBoxOption__content').eq(1).click();
+    cy.get('.euiFieldText[placeholder="Custom label"]').eq(1).type('Demo field');
+    cy.get('.euiIcon.euiIcon--medium.euiIcon--danger').eq(1).click();
+    cy.get('.euiButton.euiButton--primary.euiButton--fullWidth').contains('Add').should('exist');
+  });
+
+  it.only('Verify drop down for Aggregation', () => {
+    renderPieChart();
+    cy.get('.euiResizablePanel.euiResizablePanel--middle').contains('Data Configurations');
+    cy.get('.euiTitle.euiTitle--xxsmall').eq(1).contains('Dimensions').should('exist');
+    cy.get('.first-division .euiFormLabel.euiFormRow__label').eq(0).contains('Aggregation');
+    cy.get('[data-test-subj="comboBoxSearchInput"]').eq(0).click();
+    cy.get('.euiComboBoxOption__content').contains('COUNT');
+    cy.get('.euiComboBoxOption__content').contains('SUM');
+    cy.get('.euiComboBoxOption__content').contains('AVERAGE');
+    cy.get('.euiComboBoxOption__content').contains('MAX');
+    cy.get('.euiComboBoxOption__content').contains('MIN');
+    cy.get('.euiComboBoxOption__content').contains('VAR_SAMP');
+    cy.get('.euiComboBoxOption__content').contains('VAR_POP');
+    cy.get('.euiComboBoxOption__content').contains('STDDEV_SAMP');
+    cy.get('.euiComboBoxOption__content').contains('STDDEV_POP').should('exist');
   });
 });
