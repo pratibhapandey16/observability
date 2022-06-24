@@ -1006,4 +1006,12 @@ describe('Renders Data Configurations section for Pie chart', () => {
       cy.get('.euiComboBoxOption__content').contains(value);
     });
   });
+
+  it('Collapsible mode for Data Configuration panel', () => {
+    renderPieChart();
+    cy.get('.euiResizablePanel.euiResizablePanel--middle').contains('Data Configurations');
+    cy.get('.euiResizableButton.euiResizableButton--horizontal').eq(1).click();
+    cy.get('[data-test-subj="panel-1-toggle"]').click();
+    cy.get('[class*="euiResizableToggleButton-isCollapsed"]').eq(1).should('exist');
+  });
 });
