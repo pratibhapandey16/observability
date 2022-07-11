@@ -996,7 +996,7 @@ describe('Renders Data Configurations section for Pie chart', () => {
     cy.get('.euiButton.euiButton--primary.euiButton--fullWidth').contains('Add').should('exist');
   });
 
-  it('Verify drop down for Aggregation', () => {
+  it('Verify drop down values for Aggregation', () => {
     renderPieChart();
     cy.get('.euiResizablePanel.euiResizablePanel--middle').contains('Data Configurations');
     cy.get('.euiTitle.euiTitle--xxsmall').eq(1).contains('Dimensions').should('exist');
