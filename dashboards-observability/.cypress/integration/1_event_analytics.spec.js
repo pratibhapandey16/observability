@@ -973,7 +973,7 @@ describe('Renders Tree Map for Parent Fields Multicolor Option', () => {
   });
 });
 
-describe('Renders Data Configurations section for Pie chart', () => {
+describe.only('Renders Data Configurations section for Pie chart', () => {
   beforeEach(() => {
     landOnEventVisualizations();
   });
@@ -1015,3 +1015,4 @@ describe('Renders Data Configurations section for Pie chart', () => {
     cy.get('[class*="euiResizableToggleButton-isCollapsed"]').eq(1).should('exist');
   });
 });
+
