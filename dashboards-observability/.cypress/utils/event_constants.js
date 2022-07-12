@@ -80,6 +80,40 @@ export const landOnPanels = () => {
   cy.wait(delay);
 };
 
+export const vis_name_sub_string = Math.floor(Math.random() * 100);
+export const saveVisualizationAndVerify = () => {
+  cy.get('[data-test-subj="eventExplorer__saveManagementPopover"]').click();
+  cy.get('[data-test-subj="eventExplorer__querySaveComboBox"]').click();
+  cy.get('.euiComboBoxOptionsList__rowWrap .euiFilterSelectItem').eq(0).click();
+  cy.get('.euiPopover__panel .euiFormControlLayoutIcons [data-test-subj="comboBoxToggleListButton"]')
+    .eq(0)
+    .click();
+  cy.get('.euiPopover__panel input')
+    .eq(1)
+    .type(`Test visualization` + vis_name_sub_string);
+  cy.get('[data-test-subj="eventExplorer__querySaveConfirm"]').click();
+  cy.wait(delay);
+  cy.get('.euiHeaderBreadcrumbs a').eq(1).click();
+  cy.get('.euiFlexGroup .euiFormControlLayout__childrenWrapper input')
+    .eq(0)
+    .type(`Test visualization` + vis_name_sub_string)
+    .type('{enter}');
+  //cy.get('.euiBasicTable .euiTableCellContent button').eq(0).click();
+};
+export const deleteVisualization = () => {
+  cy.get('a[href = "#/event_analytics"]').click();
+  cy.get('.euiFlexGroup .euiFormControlLayout__childrenWrapper input')
+    .eq(0)
+    .type(`Test visualization` + vis_name_sub_string)
+    .type('{enter}');
+  cy.get('input[data-test-subj = "checkboxSelectAll"]').click();
+  cy.get('.euiButtonContent.euiButtonContent--iconRight.euiButton__content').click();
+  cy.get('.euiContextMenuItem .euiContextMenuItem__text').eq(0).click();
+  cy.get('input[placeholder = "delete"]').clear().type('delete');
+  cy.get('button[data-test-subj = "popoverModal__deleteButton"]').click();
+  cy.get('.euiToastHeader').should('exist');
+};
+
 export const renderTreeMapchart = () => {
   querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);
     cy.get('[data-test-subj="configPane__vizTypeSelector"] [data-test-subj="comboBoxInput"]').type('Tree Map').type('{enter}');
