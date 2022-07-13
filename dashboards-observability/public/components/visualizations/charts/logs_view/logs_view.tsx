@@ -2,10 +2,10 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import './logs_view.scss';
-import React, { useContext } from 'react';
 import { EuiAccordion, EuiPanel, EuiSpacer, htmlIdGenerator } from '@elastic/eui';
+import React, { useContext } from 'react';
 import { TabContext } from '../../../event_analytics/hooks';
+import './logs_view.scss';
 
 export const LogsView = ({ visualizations }: any) => {
   const { explorerData } = useContext<any>(TabContext);
@@ -13,16 +13,18 @@ export const LogsView = ({ visualizations }: any) => {
   const isTimeEnabled =
     dataConfig?.chartStyles?.time !== undefined ? dataConfig?.chartStyles?.time : true;
   const isWrapLinesEnabled =
-    dataConfig?.chartStyles?.wrapLines !== undefined ? dataConfig?.chartStyles?.wrapLines : false;
+    dataConfig?.chartStyles?.view !== undefined && dataConfig?.chartStyles?.view === 'wrapLines'
+      ? true
+      : false;
   const isPrettifyJSONEnabled =
-    dataConfig?.chartStyles?.prettifyJSON !== undefined
-      ? dataConfig?.chartStyles?.prettifyJSON
+    dataConfig?.chartStyles?.view !== undefined && dataConfig?.chartStyles?.view === 'prettifyJSON'
+      ? true
       : false;
   const isLogDetailsEnabled =
     dataConfig?.chartStyles?.enableLogDetails !== undefined
       ? dataConfig?.chartStyles?.enableLogDetails
       : true;
-  const isOldestFirst = dataConfig?.chartStyles?.order === 'oldestFirst' ? true : false;
+  const isOldestFirst = dataConfig?.chartStyles?.order === 'oldestFirst';
   const labelSize =
     dataConfig?.chartStyles?.labelSize !== undefined
       ? dataConfig?.chartStyles?.labelSize + 'px'
@@ -30,9 +32,19 @@ export const LogsView = ({ visualizations }: any) => {
   const rawData = explorerData.jsonData;
   const sortedRawData = [...rawData];
   sortedRawData.sort(function (firstData: any, secondData: any) {
-    if (firstData.timestamp === undefined || secondData.timestamp === undefined) return 1;
-    const firstTime = new Date(firstData.timestamp);
-    const secondTime = new Date(secondData.timestamp);
+    if (
+      firstData.timestamp === undefined ||
+      secondData.timestamp === undefined ||
+      firstData.new_timestamp === undefined ||
+      secondData.new_timestamp === undefined
+    )
+      return 1;
+    const firstTime = new Date(
+      firstData.timestamp !== undefined ? firstData.timestamp : firstData.new_timestamp
+    );
+    const secondTime = new Date(
+      secondData.timestamp !== undefined ? secondData.timestamp : secondData.new_timestamp
+    );
     return isOldestFirst ? firstTime - secondTime : secondTime - firstTime;
   });
   const logs =
@@ -41,12 +53,12 @@ export const LogsView = ({ visualizations }: any) => {
       let btnContent: JSX.Element;
       if (isWrapLinesEnabled) {
         const column1 = Object.keys(log).reduce((val, key) => {
-          if (key === 'timestamp') return log[key] + '  ';
+          if (key === 'timestamp' || key === 'new_timestamp') return log[key] + '  ';
           return val;
         }, '');
         let column2 = '';
         for (const [key, val] of Object.entries(log)) {
-          if (key !== 'timestamp') column2 += key + '="' + val + '"  ';
+          if (key !== 'timestamp' && key !== 'new_timestamp') column2 += key + '="' + val + '"  ';
         }
         const jsxContent = column2
           .split('  ')
@@ -55,17 +67,23 @@ export const LogsView = ({ visualizations }: any) => {
           <table className="tableContainer">
             <tr>
               {isTimeEnabled && column1 !== '' && (
-                <td className='timeColumn'>{column1.substring(0, column1.indexOf('.'))}</td>
+                <td className="timeColumn">
+                  {column1.indexOf('.') !== -1
+                    ? column1.substring(0, column1.indexOf('.'))
+                    : column1}
+                </td>
               )}
-              <td className='wrapContent'>{jsxContent}</td>
+              <td className="wrapContent">{jsxContent}</td>
             </tr>
           </table>
         );
       } else if (isPrettifyJSONEnabled) {
-        const { timestamp, ...others } = log;
+        const { timestamp, new_timestamp, ...others } = log;
         let columnContent;
         if (isTimeEnabled && timestamp !== undefined) {
           columnContent = JSON.stringify({ timestamp, ...others }, null, '\t');
+        } else if (isTimeEnabled && new_timestamp !== undefined) {
+          columnContent = JSON.stringify({ new_timestamp, ...others }, null, '\t');
         } else {
           columnContent = JSON.stringify(others, null, '\t');
         }
@@ -82,12 +100,15 @@ export const LogsView = ({ visualizations }: any) => {
         let stringContent = '';
         if (isTimeEnabled) {
           stringContent += Object.keys(log).reduce((val, key) => {
-            if (key === 'timestamp') return log[key].substring(0, log[key].indexOf('.')) + '  ';
+            if (key === 'timestamp' || key === 'new_timestamp')
+              return log[key].indexOf('.') !== -1
+                ? log[key].substring(0, log[key].indexOf('.')) + '  '
+                : log[key] + '  ';
             return val;
           });
         }
         for (const [key, val] of Object.entries(log)) {
-          if (key === 'timestamp') continue;
+          if (key === 'timestamp' || key === 'new_timestamp') continue;
           stringContent += key + '="' + val + '"  ';
         }
         const jsxContent = stringContent
@@ -96,7 +117,7 @@ export const LogsView = ({ visualizations }: any) => {
         btnContent = (
           <table>
             <tr>
-              <td className='noWrapContent'>{jsxContent}</td>
+              <td className="noWrapContent">{jsxContent}</td>
             </tr>
           </table>
         );

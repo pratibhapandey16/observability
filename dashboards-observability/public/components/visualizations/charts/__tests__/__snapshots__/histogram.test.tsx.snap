@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Bar component Renders bar component 1`] = `
-<Bar
+exports[`Histogram component Renders histogram component 1`] = `
+<Histogram
   config={true}
   layout={
     Object {
@@ -495,24 +495,15 @@ exports[`Bar component Renders bar component 1`] = `
       Array [
         Object {
           "marker": Object {
-            "color": "rgba(60,161,199,0.4)",
+            "color": "rgba(60,161,199,0.2)",
             "line": Object {
-              "color": "#3CA1C7",
-              "width": 1,
+              "color": "rgba(60,161,199,1)",
+              "width": 2,
             },
           },
           "name": "count()",
-          "orientation": "v",
-          "type": "bar",
+          "type": "histogram",
           "x": Array [
-            "error",
-            "info",
-            "login",
-            "security",
-            "success",
-            "warning",
-          ],
-          "y": Array [
             154,
             1753,
             116,
@@ -520,13 +511,12 @@ exports[`Bar component Renders bar component 1`] = `
             1964,
             219,
           ],
+          "xbins": undefined,
         },
       ]
     }
     layout={
       Object {
-        "bargap": 0.30000000000000004,
-        "bargroupgap": 0.030000000000000027,
         "barmode": "group",
         "colorway": Array [
           "#8C55A3",
@@ -544,10 +534,6 @@ exports[`Bar component Renders bar component 1`] = `
         },
         "showlegend": true,
         "title": "",
-        "xaxis": Object {
-          "automargin": true,
-          "tickangle": 0,
-        },
       }
     }
   >
@@ -561,24 +547,15 @@ exports[`Bar component Renders bar component 1`] = `
         Array [
           Object {
             "marker": Object {
-              "color": "rgba(60,161,199,0.4)",
+              "color": "rgba(60,161,199,0.2)",
               "line": Object {
-                "color": "#3CA1C7",
-                "width": 1,
+                "color": "rgba(60,161,199,1)",
+                "width": 2,
               },
             },
             "name": "count()",
-            "orientation": "v",
-            "type": "bar",
+            "type": "histogram",
             "x": Array [
-              "error",
-              "info",
-              "login",
-              "security",
-              "success",
-              "warning",
-            ],
-            "y": Array [
               154,
               1753,
               116,
@@ -586,6 +563,7 @@ exports[`Bar component Renders bar component 1`] = `
               1964,
               219,
             ],
+            "xbins": undefined,
           },
         ]
       }
@@ -594,8 +572,6 @@ exports[`Bar component Renders bar component 1`] = `
       layout={
         Object {
           "autosize": true,
-          "bargap": 0.30000000000000004,
-          "bargroupgap": 0.030000000000000027,
           "barmode": "group",
           "colorway": Array [
             "#8C55A3",
@@ -616,7 +592,9 @@ exports[`Bar component Renders bar component 1`] = `
           "title": "",
           "xaxis": Object {
             "automargin": true,
-            "tickangle": 0,
+            "rangemode": "normal",
+            "showgrid": true,
+            "zeroline": false,
           },
           "yaxis": Object {
             "rangemode": "normal",
@@ -644,5 +622,5 @@ exports[`Bar component Renders bar component 1`] = `
       />
     </PlotlyComponent>
   </Plt>
-</Bar>
+</Histogram>
 `;
