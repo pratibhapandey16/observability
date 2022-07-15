@@ -134,20 +134,6 @@ export const renderTreeMapchart = () => {
   cy.get('button[name="Slice Dice"]').click();
 };
 
-export const renderPieChart = () => {
-  querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);
-  cy.get('[data-test-subj="configPane__vizTypeSelector"] [data-test-subj="comboBoxInput"]').click();
-  cy.get('[data-test-subj="comboBoxOptionsList "] button span').contains('Pie').click();
-  cy.wait(delay);
-  cy.get('#configPanel__panelOptions .euiFieldText').click().type('Pie chart');
-  cy.get('.euiFlexItem .euiFormRow [placeholder="Description"]')
-    .click()
-    .type('This is the description for Pie chart');
-  cy.get('[data-test-subj="comboBoxInput"]').eq(1).click();
-  cy.get('[data-test-subj="comboBoxToggleListButton"]').eq(0).click();
-  cy.get('[data-test-subj="comboBoxInput"]').eq(2).click();
-};
-
 export const renderDataConfig = () => {
   cy.get('.euiResizablePanel.euiResizablePanel--middle').contains('Data Cofigurations');
   cy.get('.euiTitle.euiTitle--xxsmall').eq(1).contains('Dimensions').should('exist');
