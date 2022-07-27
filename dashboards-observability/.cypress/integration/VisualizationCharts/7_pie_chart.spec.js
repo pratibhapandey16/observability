@@ -10,8 +10,8 @@ import {
   querySearch,
   landOnEventVisualizations,
   renderDataConfig
-} from '../utils/event_constants';
-import { supressResizeObserverIssue } from '../utils/constants';
+} from '../../utils/event_constants';
+import { supressResizeObserverIssue } from '../../utils/constants';
 
 const renderPieChart = () => {
   querySearch(TEST_QUERIES[3].query, TEST_QUERIES[3].dateRangeDOM);

@@ -9,7 +9,7 @@ import {
   TEST_QUERIES,
   querySearch,
   landOnEventVisualizations,
-} from '../utils/event_constants';
+} from '../../utils/event_constants';
 
 const renderHistogramChart = () => {
   querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);

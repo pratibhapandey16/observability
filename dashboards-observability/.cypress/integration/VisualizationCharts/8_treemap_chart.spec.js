@@ -12,8 +12,8 @@ import {
   renderDataConfig,
   saveVisualizationAndVerify,
   deleteVisualization,
-} from '../utils/event_constants';
-import { supressResizeObserverIssue } from '../utils/constants';
+} from '../../utils/event_constants';
+import { supressResizeObserverIssue } from '../../utils/constants';
 
 export const renderTreeMapchart = () => {
     querySearch(TEST_QUERIES[5].query, TEST_QUERIES[5].dateRangeDOM);
