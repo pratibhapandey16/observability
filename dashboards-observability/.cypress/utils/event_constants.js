@@ -18,7 +18,8 @@ export const TEST_QUERIES = [
     dateRangeDOM: YEAR_TO_DATE_DOM_ID
   },
   {
-    query: 'source = opensearch_dashboards_sample_data_logs'
+    query: 'source = opensearch_dashboards_sample_data_logs',
+    dateRangeDOM: YEAR_TO_DATE_DOM_ID
   },
   {
     query: 'source=opensearch_dashboards_sample_data_flights | stats max(AvgTicketPrice) by DestCountry, DestCityName, Carrier',
@@ -29,7 +30,7 @@ export const TEST_QUERIES = [
     dateRangeDOM: YEAR_TO_DATE_DOM_ID
   },
   {
-    query: 'source=opensearch_dashboards_sample_data_flights | stats avg(FlightDelayMin) by DestCountry, DestCityName',
+    query: 'source=opensearch_dashboards_sample_data_flights | stats avg(FlightDelayMin) by DestCountry, DestCityName, DestAirportID, DestRegion',
     dateRangeDOM: YEAR_TO_DATE_DOM_ID
   },
   {
@@ -47,6 +48,8 @@ export const SAVE_QUERY1 = 'Mock Flight Events Overview';
 export const SAVE_QUERY2 = 'Mock Flight count by destination';
 export const SAVE_QUERY3 = 'Mock Flight count by destination save to panel';
 export const SAVE_QUERY4 = 'Mock Flight peek';
+
+export const aggregationValues = ["COUNT", "SUM", "AVERAGE", "MAX", "MIN", "VAR_SAMP", "VAR_POP", "STDDEV_SAMP", "STDDEV_POP"];
 
 export const querySearch = (query, rangeSelected) => {
   cy.get('[data-test-subj="searchAutocompleteTextArea"]').type(query);
@@ -135,14 +138,16 @@ export const renderTreeMapchart = () => {
 };
 
 export const renderDataConfig = () => {
-  cy.get('.euiResizablePanel.euiResizablePanel--middle').contains('Data Cofigurations');
+  cy.get('.euiResizablePanel.euiResizablePanel--middle').contains('Data Configurations');
   cy.get('.euiTitle.euiTitle--xxsmall').eq(1).contains('Dimensions').should('exist');
+  cy.get('.euiText.euiText--extraSmall').eq(0).click();
   cy.get('.first-division .euiFormLabel.euiFormRow__label').eq(0).contains('Aggregation');
   cy.get('[data-test-subj="comboBoxSearchInput"]').eq(0).click();
+  cy.wait(delay);
   cy.get('.euiComboBoxOption__content').eq(2).click();
   cy.get('.first-division .euiFormLabel.euiFormRow__label').eq(1).contains('Field');
   cy.get('[data-test-subj="comboBoxSearchInput"]').eq(1).click();
-  cy.get('.euiComboBoxOption__content').eq(1).click();
+  cy.get('.euiComboBoxOption__content').eq(0).click();
   cy.get('.euiFieldText[placeholder="Custom label"]').eq(0).type('Average field');
   cy.get('.euiTitle.euiTitle--xxsmall').eq(2).contains('Metrics').should('exist');
   cy.get('.first-division .euiFormLabel.euiFormRow__label').eq(0).contains('Aggregation');
